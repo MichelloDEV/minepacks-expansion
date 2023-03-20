@@ -1,6 +1,5 @@
 package me.michello.minepacks;
 
-import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,11 +29,6 @@ public class Main extends PlaceholderExpansion {
         return "1.0";
     }
 
-    @Override
-    public @NotNull String getRequiredPlugin() {
-        return "Minepacks";
-    }
-
     public YamlConfiguration cache;
 
     public String onPlaceholderRequest(Player p, String arg) {
@@ -49,10 +43,10 @@ public class Main extends PlaceholderExpansion {
                 return "Unknown player";
             }
             if(args[0].equalsIgnoreCase("backpack_contents")) {
-                return getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents().toString();
+                return MinepacksWrapper.getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents().toString();
             }
             if(args[0].equalsIgnoreCase("backpack_size")) {
-                return String.valueOf(getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
+                return String.valueOf(MinepacksWrapper.getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
             }
             if(args[0].equalsIgnoreCase("isblocked")) {
                 if(args.length < 3) {
@@ -60,7 +54,7 @@ public class Main extends PlaceholderExpansion {
                 }
                 String blocked = args[1];
                 String amount = args[2];
-                return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? "Yes" : "No";
+                return MinepacksWrapper.getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? "Yes" : "No";
             }
             if(args[0].equalsIgnoreCase("get")) {
                 if(args.length < 3) {
@@ -78,17 +72,10 @@ public class Main extends PlaceholderExpansion {
                 return String.valueOf(value);
             }
             return "";
-        } catch (Exception e) {
+        } catch (NoClassDefFoundError e) {
             return "Minepacks not found!";
         }
     }
 
-    public static MinepacksPlugin getMinepacks() {
-        Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin("Minepacks");
-        if(!(bukkitPlugin instanceof MinepacksPlugin)) {
-            return null;
-        }
-        return (MinepacksPlugin) bukkitPlugin;
-    }
 
 }
