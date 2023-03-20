@@ -29,6 +29,11 @@ public class Main extends PlaceholderExpansion {
         return "1.0";
     }
 
+    @Override
+    public @NotNull String getRequiredPlugin() {
+        return "Minepacks";
+    }
+
     public YamlConfiguration cache;
 
     public String onPlaceholderRequest(Player p, String arg) {
