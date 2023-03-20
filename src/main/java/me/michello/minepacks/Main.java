@@ -30,7 +30,12 @@ public class Main extends PlaceholderExpansion {
         return "1.0";
     }
 
-    public HashMap<String, Object> cache = new HashMap<>();
+    @Override
+    public @NotNull String getRequiredPlugin() {
+        return "Minepacks";
+    }
+
+    public YamlConfiguration cache;
 
     public String onPlaceholderRequest(Player p, String arg) {
         try {
@@ -65,15 +70,12 @@ public class Main extends PlaceholderExpansion {
 
                 String path = args[2];
 
-                if(cache.containsKey(path)) {
-                    return String.valueOf(cache.get(path));
-                } else {
+                if(cache == null) {
                     File file = new File(Bukkit.getServer().getWorldContainer() + "/plugins/Minepacks/" + config + ".yml");
-                    YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
-                    Object value = configuration.get(path);
-                    cache.put(path, value);
-                    return String.valueOf(value);
+                    cache = YamlConfiguration.loadConfiguration(file);
                 }
+                Object value = cache.get(path);
+                return String.valueOf(value);
             }
             return "";
         } catch (Exception e) {
