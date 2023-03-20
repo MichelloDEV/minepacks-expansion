@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Main extends PlaceholderExpansion {
     @Override
@@ -28,6 +29,8 @@ public class Main extends PlaceholderExpansion {
     public @NotNull String getVersion() {
         return "1.0";
     }
+
+    public HashMap<String, Object> cache = new HashMap<>();
 
     public String onPlaceholderRequest(Player p, String arg) {
         try {
@@ -63,29 +66,14 @@ public class Main extends PlaceholderExpansion {
 
                 String path = args[2];
 
-                File file = new File(Bukkit.getServer().getWorldContainer() + "/plugins/Minepacks/" + config + ".yml");
-                YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
-                return String.valueOf(configuration.get(path));
-            }
-            if(args[0].equalsIgnoreCase("set")) {
-                if(args.length < 4) {
-                    return "Usage: %minepacks_set config path value% | %minepacks_set config BackpackTitle &bBackpack%";
-                }
-                String config = args[1];
-
-                String path = args[2];
-                String value = args[3];
-
-
-                File file = new File(Bukkit.getServer().getWorldContainer() + "/plugins/Minepacks/" + config + ".yml");
-                YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
-
-                configuration.set(path, convert(value));
-                try {
-                    configuration.save(file);
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bp reload");
-                } catch (IOException e) {
-                    return "Failed to save the file!";
+                if(cache.containsKey(path)) {
+                    return String.valueOf(cache.get(path));
+                } else {
+                    File file = new File(Bukkit.getServer().getWorldContainer() + "/plugins/Minepacks/" + config + ".yml");
+                    YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+                    Object value = configuration.get(path);
+                    cache.put(path, value);
+                    return String.valueOf(value);
                 }
             }
             return "";
