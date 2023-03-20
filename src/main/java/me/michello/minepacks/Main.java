@@ -36,9 +36,8 @@ public class Main extends PlaceholderExpansion {
         try {
 
             String[] args = arg.split(" ");
-            System.out.println(arg + " | " + args[0]);
             Player plr = p;
-            if(args.length > 2 && !args[0].equalsIgnoreCase("set")) {
+            if(args.length > 2 && !args[0].equalsIgnoreCase("get")) {
                 plr = Bukkit.getPlayer(args[1]);
             }
             if(plr == null) {
