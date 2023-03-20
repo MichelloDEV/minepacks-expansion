@@ -63,7 +63,7 @@ public class Main extends PlaceholderExpansion {
                 return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? "Yes" : "No";
             }
             if(args[0].equalsIgnoreCase("get")) {
-                if(args.length < 4) {
+                if(args.length < 3) {
                     return "Usage: %minepacks_get config path% | %minepacks_set config BackpackTitle%";
                 }
                 String config = args[1];
@@ -89,20 +89,6 @@ public class Main extends PlaceholderExpansion {
             return null;
         }
         return (MinepacksPlugin) bukkitPlugin;
-    }
-
-    public Object convert(String str) throws IllegalArgumentException {
-        if (str.equalsIgnoreCase("true")) {
-            return true;
-        } else if (str.equalsIgnoreCase("false")) {
-            return false;
-        } else {
-            try {
-                return Integer.parseInt(str);
-            } catch (NumberFormatException e) {
-                return 0;
-            }
-        }
     }
 
 }
